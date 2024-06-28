@@ -1,7 +1,10 @@
 # DivyaToken-Eth-Avax-Module-3
-## Description
 
-This repository contains the Solidity code for the DivyaToken smart contract. DivyaToken is a simple ERC-20 token smart contract written in Solidity. It provides basic functionality for managing a custom token called "DivyaToken".
+DivyaToken is a simple ERC-20 token smart contract written in Solidity. It provides basic functionality for managing a custom token called "DivyaToken" (DT).
+
+## Overview
+
+This smart contract implements the following features:
 
 ### Contract Details
 
@@ -11,52 +14,33 @@ This repository contains the Solidity code for the DivyaToken smart contract. Di
 - **Total Supply**: Tracks the total supply of the token
 - **Balances**: Tracks the balance of each address
 
-## Getting Started
-For this project, I am asked to write a smart contract to create my own ERC20 token and deploy it using HardHat or Remix and also from te chosen tool , the contract owner should be able to mint tokens to a provided address and any user should be able to burn and transfer tokens.
-```javascript
-pragma solidity ^0.8.18;
+## Functions
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+- **mint**: Allows the contract owner to mint new DT tokens and distribute them to an address.
+- **burn**: Allows a token holder to burn (destroy) their own DT tokens.
+- **transfer**: Allows token holders to transfer DT tokens to another address.
 
-contract DivyaToken is ERC20 {
-    address public owner;
-    uint public TotalSupply;
+## Usage
 
-```
-The import "@openzeppelin/contracts/token/ERC20/ERC20.sol"; line is used to import the ERC20 contract from the OpenZeppelin library. It  provides all the features that is needed to create an ERC20 token, such as the ability to transfer tokens, mint new tokens,etc. The contract HarshDeoRavi is ERC20 line declares a new contract called HarshDeoRavi that inherits from the ERC20 contract meaning that it will have all features of ERC20. The public variables owner and TotalSupply is declared.  
-   
-Next, 
-```javascript
-constructor(string memory TokenName, string memory TokenSymbol) ERC20(TokenName, TokenSymbol) {
-        owner = msg.sender;
-```
-The above given code initializes the contract with token name and token symbol and sets the owner as the deployer
-```javascript
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only the contract owner can call this function");
-```
-The modifier function given above ensures that only the owner of the contract is using it. 
+1. Deploy the smart contract to the Ethereum network.
+2. Interact with the contract using the provided functions.
+   - Use the `mint` function to create new DT tokens.
+   - Use the `burn` function to destroy DT tokens.
+   - Use the `transfer` function to send DT tokens to another address.
 
-```javascript
- function CheckBalance () view public returns (uint){
-        return balance;
-```
-The CheckBalance() function is a function that returns the total balance of the contract. In other words, it allows anyone to view the total amount of money that is stored in the contract.
+## Deployment
 
-```javascript
- mapping (address => uint) public AvailableBalance;
-```
-The mapping function is a function that stores the available balance of the respective address.
-```javascript
-    function mint(address WalletAddress, uint Amount) public  onlyOwner{
-       AvailableBalance[WalletAddress] = AvailableBalance[WalletAddress] + Amount;
-        TotalSupply = TotalSupply + Amount;
-```
- The mint() function allows the owner of the contract to create new tokens and deposit them into a wallet address. The tokens after minting is added to the total supply of the token.
- ```javascript
-  function burn(address WalletAddress, uint Amount) public {
-        if (AvailableBalance[WalletAddress] >= Amount) {
-            AvailableBalance[WalletAddress] = AvailableBalance[WalletAddress] - Amount;
-            TotalSupply = TotalSupply - Amount;
-```
-The burn() function allows the owner of the contract to destroy tokens from a wallet address. If the specified wallet address has at least the specified amount of tokens, the burn() function will reduce the wallet address's available balance by the specified amount and reduce the total supply of tokens by the specified amount.
+To deploy the DivyaToken contract:
+
+1. Use a Solidity development environment like Remix or Truffle.
+2. Set the Solidity version to ^0.8.0.
+3. Deploy the contract to an Ethereum network of your choice.
+4. After deployment, the contract owner can use the `mint` function to create and distribute new SDT tokens.
+
+## Security Considerations
+
+This is a simple example contract and does not implement advanced security features. It's recommended to review and audit the contract code thoroughly before deploying it to a production environment.
+
+## License
+
+This smart contract is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
