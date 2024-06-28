@@ -1,34 +1,30 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.23;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DivyaToken is ERC20 {
-    address public owner;
-    uint public TotalSupply;
+contract DivyaToken is ERC20, Ownable {
+    // Constructor
+    constructor() ERC20("DivyaToken", "DT") Ownable(msg.sender) {}
 
-    constructor(string memory TokenName, string memory TokenSymbol) ERC20(TokenName, TokenSymbol) {
-        owner = msg.sender;
+    // Mint new coins
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only the contract owner can call this function");
-        _;
+    // Burn coins
+    function burn(uint256 amount) public {
+        require(amount > 0, "Transfer amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount, "Not enough coins to burn"); 
+        _burn(msg.sender, amount);
     }
 
-    mapping (address => uint) public AvailableBalance;
-
-    // mint function
-    function mint(address WalletAddress, uint Amount) public  onlyOwner{
-       AvailableBalance[WalletAddress] = AvailableBalance[WalletAddress] + Amount;
-        TotalSupply = TotalSupply + Amount;
-    }
-
-    // burn function
-     function burn(address WalletAddress, uint Amount) public {
-        if (AvailableBalance[WalletAddress] >= Amount) {
-            AvailableBalance[WalletAddress] = AvailableBalance[WalletAddress] - Amount;
-            TotalSupply = TotalSupply - Amount;
-        } 
+    // Transfer coins
+    function transferTokens(address receiver, uint256 amount) external {
+        require(amount > 0, "Transfer amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount, "Not enough coins to transfer"); 
+        approve(msg.sender, amount);
+        transferFrom(msg.sender, receiver, amount);
     }
 }
